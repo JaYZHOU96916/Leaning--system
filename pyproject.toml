@@ -7,6 +7,7 @@ name = "academic-os"
 version = "0.1.0"
 description = "Canvas Academic OS backend"
 requires-python = ">=3.13,<3.15"
+
 dependencies = [
   "apscheduler>=3.11,<4.0",
   "fastapi>=0.141,<0.142",
@@ -21,6 +22,9 @@ dependencies = [
   "cryptography>=43.0,<45.0",
   "uvicorn[standard]>=0.30,<1.0",
 ]
+
+[project.scripts]
+academic-os-scheduler = "app.scheduler:main"
 
 [project.optional-dependencies]
 dev = [

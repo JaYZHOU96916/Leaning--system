@@ -1,4 +1,5 @@
 import asyncio
+import threading
 from collections.abc import Callable
 
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -43,6 +44,6 @@ def main() -> None:
     scheduler = create_scheduler(settings)
     scheduler.start()
     try:
-        asyncio.get_event_loop().run_forever()
+        threading.Event().wait()
     except (KeyboardInterrupt, SystemExit):
         scheduler.shutdown(wait=True)
