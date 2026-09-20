@@ -1,0 +1,2 @@
+"""AI-assisted academic processing."""
+

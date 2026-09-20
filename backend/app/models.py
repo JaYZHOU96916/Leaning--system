@@ -100,6 +100,8 @@ class Material(TimestampedModel, table=True):
     remote_updated_at: datetime | None = None
     content_type: str | None = None
     size_bytes: int | None = None
+    canvas_module_id: int | None = Field(default=None, index=True)
+    remote_path: str | None = None
     week: str | None = None
     category: str | None = None
     download_url: str | None = None
@@ -127,6 +129,18 @@ class Flashcard(TimestampedModel, table=True):
     question: str
     answer: str
     source: str | None = None
+
+
+class FlashcardJob(TimestampedModel, table=True):
+    __tablename__ = "flashcard_job"
+
+    id: int | None = Field(default=None, primary_key=True)
+    course_id: int = Field(foreign_key="course.id", index=True, nullable=False)
+    material_id: int = Field(foreign_key="material.id", index=True, nullable=False)
+    status: str = "pending"
+    cards_created: int = 0
+    error: str | None = None
+    completed_at: datetime | None = None
 
 
 class TodoItem(TimestampedModel, table=True):

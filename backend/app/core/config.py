@@ -39,6 +39,12 @@ class Settings(BaseSettings):
     alert_webhook_kind: Literal["generic", "discord", "telegram"] = "generic"
     alert_email_to: str | None = None
 
+    llm_base_url: str = "https://api.openai.com/v1"
+    llm_api_key: SecretStr | None = None
+    llm_model: str = "gpt-4o-mini"
+    llm_timeout_seconds: float = 60.0
+    materials_root_dir: str = "./data/course_materials"
+
     @field_validator("canvas_base_url")
     @classmethod
     def normalize_canvas_base_url(cls, value: str) -> str:

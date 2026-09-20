@@ -3,6 +3,7 @@ import email.utils
 import re
 from collections.abc import AsyncIterator, Awaitable, Callable, Mapping
 from datetime import UTC, datetime
+from pathlib import Path
 from typing import Any
 
 import httpx
@@ -161,3 +162,24 @@ class CanvasClient:
             else:
                 items.append(payload)
         return items
+
+    async def download_to_path(
+        self,
+        url: str,
+        destination: Path,
+        *,
+        chunk_size: int = 1024 * 1024,
+    ) -> int:
+        """Stream a Canvas file to disk without buffering the whole file in memory."""
+
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        async with self._client.stream("GET", url) as response:
+            if response.is_error:
+                raise CanvasAPIError(response.status_code, self._error_message(response))
+            await self._throttle_from_response(response)
+            size = 0
+            with destination.open("wb") as output:
+                async for chunk in response.aiter_bytes(chunk_size):
+                    output.write(chunk)
+                    size += len(chunk)
+            return size
