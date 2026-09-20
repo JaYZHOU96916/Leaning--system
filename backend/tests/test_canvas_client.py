@@ -42,6 +42,7 @@ async def test_client_follows_link_pagination_and_sends_bearer_token() -> None:
     assert items == [{"id": 1}, {"id": 2}]
     assert len(requests) == 2
     assert requests[0].headers["Authorization"] == "Bearer test-token"
+    assert requests[0].headers["User-Agent"] == "AcademicOS/0.1 (Canvas integration)"
 
 
 async def test_client_retries_rate_limit_response() -> None:

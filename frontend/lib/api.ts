@@ -25,7 +25,8 @@ export type Analytics = {
   daily: { date: string; seconds: number }[];
 };
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+export const API_DOCS_URL = `${API_BASE}/docs`;
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE}${path}`, {

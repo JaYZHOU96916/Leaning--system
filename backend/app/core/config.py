@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     canvas_base_url: str = "https://canvas.instructure.com/api/v1"
     canvas_api_token: SecretStr = SecretStr("")
     canvas_encryption_key: SecretStr | None = None
+    canvas_user_agent: str = "AcademicOS/0.1 (Canvas integration)"
 
     canvas_request_timeout_seconds: float = 30.0
     canvas_max_retries: int = 3

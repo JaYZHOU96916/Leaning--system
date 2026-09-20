@@ -55,7 +55,10 @@ class CanvasClient:
         self._sleep = sleep
 
     def _build_headers(self) -> dict[str, str]:
-        headers = {"Accept": "application/json"}
+        headers = {
+            "Accept": "application/json",
+            "User-Agent": self.settings.canvas_user_agent,
+        }
         if self.settings.canvas_token_value:
             headers["Authorization"] = f"Bearer {self.settings.canvas_token_value}"
         return headers

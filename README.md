@@ -52,6 +52,17 @@ CANVAS_API_TOKEN=your-personal-access-token
 CANVAS_ENCRYPTION_KEY=your-fernet-key
 ```
 
+### University of Melbourne
+
+墨尔本大学 Canvas 的 API 地址使用：
+
+```bash
+CANVAS_BASE_URL=https://canvas.lms.unimelb.edu.au/api/v1
+CANVAS_USER_AGENT=AcademicOS/0.1 (Canvas integration)
+```
+
+墨大对 Canvas access token 有额外管理要求：学生/教职员工需要按照学校流程通过 ServiceNow 向 Teaching and Learning Innovation 申请，拿到 Token 后再到 Canvas 个人 Settings 中激活。Token 等同于账号密码，应当只保存在本机 `.env` 或系统密钥链中；不要发到聊天、Issue 或 Git。详见学校的 [Canvas access tokens 指南](https://lms.unimelb.edu.au/staff/guides/canvas/administration-of-the-lms/canvas-access-tokens)。
+
 后台运行：
 
 ```bash
@@ -82,6 +93,7 @@ docker compose down
 | `DATABASE_URL` | `sqlite:///./data/academic_os.db` | SQLite 路径；生产可替换 PostgreSQL URL |
 | `CANVAS_BASE_URL` | Canvas 公共站点 | 学校 Canvas 的 `/api/v1` 地址 |
 | `CANVAS_API_TOKEN` | 空 | Canvas Personal Access Token |
+| `CANVAS_USER_AGENT` | `AcademicOS/0.1 (Canvas integration)` | 发给 Canvas 的应用标识；墨大 API 要求描述性 User-Agent |
 | `CANVAS_ENCRYPTION_KEY` | 空 | Fernet 密钥，用于应用层安全保存 Token |
 | `CANVAS_REQUEST_TIMEOUT_SECONDS` | `30` | Canvas 单次请求超时 |
 | `CANVAS_MAX_RETRIES` | `3` | 网络错误与限流重试上限 |
@@ -105,12 +117,10 @@ python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().d
 
 ## 4. Canvas Token 获取
 
-1. 登录学校 Canvas。
-2. 打开头像菜单中的 **Settings / Account Settings**。
-3. 在 **Approved Integrations** 或 **New Access Token** 区域创建 Token。
-4. 为 Token 添加容易识别的用途和过期日期，并只复制一次显示的值。
-5. 将 Token 写入本机 `.env` 的 `CANVAS_API_TOKEN`，不要放进代码、截图、Issue 或 Git。
-6. 同时设置 `CANVAS_ENCRYPTION_KEY`，应用在需要持久化 Token 时使用 Fernet 加密。
+1. 按学校流程通过 ServiceNow 申请 Canvas access token，写明用途和需要的时间范围。
+2. Token 获批后，登录 Canvas，在个人 **Settings** 中激活它。
+3. 将 Token 写入本机 `.env` 的 `CANVAS_API_TOKEN`，不要放进代码、截图、Issue 或 Git。
+4. 同时设置 `CANVAS_ENCRYPTION_KEY`，应用在需要持久化 Token 时使用 Fernet 加密。
 
 首次同步可通过 Swagger 或命令行调用：
 

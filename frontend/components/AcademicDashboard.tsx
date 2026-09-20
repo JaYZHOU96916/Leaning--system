@@ -41,6 +41,7 @@ import {
   type Analytics,
   type FocusState,
   type TodoItem,
+  API_DOCS_URL,
   getActiveFocus,
   getFocusAnalytics,
   getGradeWhatIf,
@@ -152,6 +153,13 @@ function navIcon(label: string) {
   return <Gauge size={19} />;
 }
 
+const navigationTargets: Record<string, string> = {
+  Today: "today-column",
+  Calendar: "rhythm-panel",
+  Library: "flashcard-panel",
+  Progress: "study-panel",
+};
+
 function CircularTimer({ seconds, running }: { seconds: number; running: boolean }) {
   const minutes = Math.floor(seconds / 60).toString().padStart(2, "0");
   const remainder = (seconds % 60).toString().padStart(2, "0");
@@ -182,6 +190,8 @@ export function AcademicDashboard() {
   const [requiredGrade, setRequiredGrade] = useState("76.7");
   const [cardIndex, setCardIndex] = useState(0);
   const [cardFlipped, setCardFlipped] = useState(false);
+  const [activeNavigation, setActiveNavigation] = useState("Today");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const [hydrated, setHydrated] = useState(false);
 
@@ -225,6 +235,15 @@ export function AcademicDashboard() {
   const schedule = useMemo(() => todos.filter((item) => item.kind === "schedule"), [todos]);
   const currentCard = flashcards[cardIndex];
   const weeklyHours = (analytics.total_seconds / 3600).toFixed(1);
+
+  function handleNavigation(label: string) {
+    setActiveNavigation(label);
+    document.getElementById(navigationTargets[label])?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+    setMobileMenuOpen(false);
+  }
 
   async function handleFocus() {
     try {
@@ -276,13 +295,13 @@ export function AcademicDashboard() {
         </div>
         <div className="rail-nav" aria-label="主导航">
           {["Today", "Calendar", "Library", "Progress"].map((label) => (
-            <button className={`rail-button ${label === "Today" ? "rail-button-active" : ""}`} key={label} title={label}>
+            <button className={`rail-button ${activeNavigation === label ? "rail-button-active" : ""}`} key={label} title={label} aria-current={activeNavigation === label ? "page" : undefined} onClick={() => handleNavigation(label)}>
               {navIcon(label)}
               <span>{label}</span>
             </button>
           ))}
         </div>
-        <button className="rail-button rail-help" title="帮助">
+        <button className="rail-button rail-help" title="帮助" onClick={() => window.open(API_DOCS_URL, "_blank", "noopener,noreferrer")}>
           <CircleHelp size={19} />
         </button>
       </aside>
@@ -297,8 +316,17 @@ export function AcademicDashboard() {
           </div>
         </header>
 
+        {mobileMenuOpen && <nav className="mobile-nav-menu" aria-label="移动端主导航">
+          {["Today", "Calendar", "Library", "Progress"].map((label) => (
+            <button className={activeNavigation === label ? "mobile-nav-active" : ""} key={label} onClick={() => handleNavigation(label)}>
+              {navIcon(label)}
+              <span>{label}</span>
+            </button>
+          ))}
+        </nav>}
+
         <div className="content-grid">
-          <section className="today-column">
+          <section className="today-column" id="today-column">
             <div className="headline-block">
               <p className="eyebrow">SATURDAY · 20 SEP 2026</p>
               <h1>Make the next<br /><em>25 minutes</em> count.</h1>
@@ -352,7 +380,7 @@ export function AcademicDashboard() {
               </div>
             </section>
 
-            <section className="panel rhythm-panel">
+            <section className="panel rhythm-panel" id="rhythm-panel">
               <div className="panel-heading"><div><span className="section-index">03</span><h2>Today&apos;s rhythm</h2></div><span className="muted-count">UTC+10</span></div>
               <div className="rhythm-list">
                 {schedule.length ? schedule.map((item) => (
@@ -361,7 +389,7 @@ export function AcademicDashboard() {
               </div>
             </section>
 
-            <section className="panel flashcard-panel">
+            <section className="panel flashcard-panel" id="flashcard-panel">
               <div className="panel-heading"><div><span className="section-index">04</span><h2>One card to keep</h2></div><Sparkles size={18} className="spark-icon" /></div>
               <button className={`flashcard ${cardFlipped ? "flashcard-flipped" : ""}`} onClick={() => setCardFlipped((current) => !current)} aria-label="翻转复习卡片">
                 <span className="flashcard-tag">{currentCard.tag}</span>
@@ -373,7 +401,7 @@ export function AcademicDashboard() {
           </section>
 
           <aside className="insight-column">
-            <section className="panel study-panel">
+            <section className="panel study-panel" id="study-panel">
               <div className="panel-heading"><div><span className="section-index">05</span><h2>Study pulse</h2></div><TrendingUp size={18} className="mint-icon" /></div>
               <div className="pulse-number"><strong>{weeklyHours}</strong><span>hours<br />this week</span></div>
               <div className="chart-wrap chart-wrap-area"><ResponsiveContainer width="100%" height="100%"><AreaChart data={analytics.daily}><defs><linearGradient id="pulseFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#bce7d3" stopOpacity={0.42} /><stop offset="100%" stopColor="#bce7d3" stopOpacity={0} /></linearGradient></defs><CartesianGrid vertical={false} stroke="#e5e1d7" /><XAxis dataKey="date" tickLine={false} axisLine={false} tick={{ fill: "#8993a1", fontSize: 10 }} /><YAxis hide /><Tooltip cursor={{ stroke: "#ff704a", strokeDasharray: "3 3" }} formatter={(value) => [`${Math.round(Number(value) / 60)}m`, "focus"]} /><Area type="monotone" dataKey="seconds" stroke="#6cac8f" fill="url(#pulseFill)" strokeWidth={2.5} /></AreaChart></ResponsiveContainer></div>
@@ -393,7 +421,7 @@ export function AcademicDashboard() {
             </section>
           </aside>
         </div>
-        <footer className="page-footer"><span><Clock3 size={14} /> Last sync · just now</span><span>Academic OS / built for the long semester</span><button><Menu size={14} /> Menu</button></footer>
+        <footer className="page-footer"><span><Clock3 size={14} /> Last sync · just now</span><span>Academic OS / built for the long semester</span><button aria-expanded={mobileMenuOpen} onClick={() => setMobileMenuOpen((current) => !current)}><Menu size={14} /> Menu</button></footer>
       </section>
     </main>
   );
