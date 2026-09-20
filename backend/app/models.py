@@ -54,9 +54,23 @@ class Assignment(TimestampedModel, table=True):
     lock_at: datetime | None = None
     points_possible: float | None = None
     score: float | None = None
+    remote_updated_at: datetime | None = None
     submission_status: str = "unsubmitted"
     submitted_at: datetime | None = None
     html_url: str | None = None
+
+
+class AlertDelivery(TimestampedModel, table=True):
+    __tablename__ = "alert_delivery"
+
+    id: int | None = Field(default=None, primary_key=True)
+    assignment_id: int = Field(foreign_key="assignment.id", index=True, nullable=False)
+    alert_level: str
+    channel: str = "webhook"
+    dedupe_key: str = Field(index=True, unique=True, nullable=False)
+    status: str = "pending"
+    sent_at: datetime | None = None
+    error: str | None = None
 
 
 class ScheduleEvent(TimestampedModel, table=True):

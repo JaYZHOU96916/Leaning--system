@@ -27,6 +27,7 @@ def test_database_initializes_all_phase_zero_tables() -> None:
         "focus_session",
         "flashcard",
         "todo_item",
+        "alert_delivery",
     }
     assert expected <= table_names
 

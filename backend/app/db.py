@@ -23,6 +23,6 @@ def create_db_and_tables(engine: Engine) -> None:
     SQLModel.metadata.create_all(engine)
 
 
-def get_session() -> Generator[Session, None, None]:
+def get_session() -> Generator[Session]:
     with Session(get_engine()) as session:
         yield session

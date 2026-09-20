@@ -33,6 +33,12 @@ class Settings(BaseSettings):
     canvas_min_rate_limit_sleep_seconds: float = 0.25
     canvas_max_rate_limit_sleep_seconds: float = 8.0
 
+    scheduler_enabled: bool = False
+    ddl_alert_poll_interval_minutes: int = 15
+    alert_webhook_url: str | None = None
+    alert_webhook_kind: Literal["generic", "discord", "telegram"] = "generic"
+    alert_email_to: str | None = None
+
     @field_validator("canvas_base_url")
     @classmethod
     def normalize_canvas_base_url(cls, value: str) -> str:
