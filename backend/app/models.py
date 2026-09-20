@@ -131,7 +131,9 @@ class FocusSession(TimestampedModel, table=True):
     course_id: int | None = Field(default=None, foreign_key="course.id", index=True)
     assignment_id: int | None = Field(default=None, foreign_key="assignment.id", index=True)
     started_at: datetime = Field(default_factory=utcnow, index=True)
+    active_started_at: datetime | None = None
     ended_at: datetime | None = None
+    paused_at: datetime | None = None
     duration_seconds: int = 0
     status: str = "running"
     notes: str | None = None

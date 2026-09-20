@@ -45,6 +45,7 @@ class Settings(BaseSettings):
     llm_timeout_seconds: float = 60.0
     materials_root_dir: str = "./data/course_materials"
     snapshots_root_dir: str = "./data/snapshots"
+    frontend_origin: str = "http://localhost:3000"
 
     @field_validator("canvas_base_url")
     @classmethod
