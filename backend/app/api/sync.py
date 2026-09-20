@@ -10,8 +10,18 @@ from app.grades.sync import GradeDataSyncService
 from app.materials.sync import MaterialSyncService
 from app.models import Course
 from app.sync.assignments import AssignmentSyncService
+from app.sync.courses import CourseSyncService
 
 router = APIRouter(prefix="/api/sync", tags=["sync"])
+
+
+@router.post("/courses")
+async def sync_courses(session: Session = Depends(get_session)) -> dict[str, int]:
+    """Bootstrap or refresh the local course catalog from Canvas."""
+
+    async with CanvasClient() as client:
+        summary = await CourseSyncService(client).sync_courses(session)
+    return summary.__dict__
 
 
 @router.post("/assignments")

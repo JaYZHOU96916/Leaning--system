@@ -125,6 +125,7 @@ python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().d
 首次同步可通过 Swagger 或命令行调用：
 
 ```bash
+curl -X POST http://localhost:8000/api/sync/courses
 curl -X POST http://localhost:8000/api/sync/assignments
 curl -X POST http://localhost:8000/api/sync/materials
 curl -X POST http://localhost:8000/api/sync/grades
@@ -161,7 +162,7 @@ http://localhost:8000/api/calendar/feed.ics?include_assignments=true&include_eve
 | 模块 | 主要端点 |
 | --- | --- |
 | 系统 | `GET /api/health` |
-| Canvas 同步 | `POST /api/sync/assignments`, `/materials`, `/grades`, `/submissions` |
+| Canvas 同步 | `POST /api/sync/courses`, `/assignments`, `/materials`, `/grades`, `/submissions` |
 | 日历 | `GET /api/calendar/feed.ics` |
 | 课件 | `GET /api/courses/{course_id}/materials.zip` |
 | AI 卡片 | `POST /api/materials/{material_id}/flashcards/generate`、`GET /api/flashcard-jobs/{job_id}`、`GET /api/courses/{course_id}/flashcards.anki` |
