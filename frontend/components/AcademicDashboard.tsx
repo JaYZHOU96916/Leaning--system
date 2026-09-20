@@ -119,13 +119,24 @@ function formatDuration(seconds: number) {
   return hours ? `${hours}h ${minutes}m` : `${minutes}m`;
 }
 
-function formatDue(dueAt: string | null) {
+function formatDue(dueAt: string | null, hydrated: boolean) {
   if (!dueAt) return "今天内";
+  if (!hydrated) return "—";
   const diff = new Date(dueAt).getTime() - Date.now();
   const hours = Math.round(diff / (1000 * 60 * 60));
   if (hours <= 0) return "已逾期";
   if (hours < 24) return `${hours}h left`;
   return `${Math.round(hours / 24)}d left`;
+}
+
+function formatScheduleTime(dueAt: string | null, hydrated: boolean) {
+  if (!dueAt || !hydrated) return "—";
+  return new Date(dueAt).toLocaleTimeString("en-AU", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: "Australia/Melbourne",
+  });
 }
 
 function kindIcon(kind: TodoItem["kind"]) {
@@ -171,6 +182,12 @@ export function AcademicDashboard() {
   const [requiredGrade, setRequiredGrade] = useState("76.7");
   const [cardIndex, setCardIndex] = useState(0);
   const [cardFlipped, setCardFlipped] = useState(false);
+
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -297,7 +314,7 @@ export function AcademicDashboard() {
                 {todos.map((todo, index) => (
                   <button className={`task-row ${selectedTodo.key === todo.key ? "task-row-selected" : ""}`} key={todo.key} onClick={() => setSelectedTodo(todo)}>
                     <span className={`task-icon task-icon-${todo.kind}`}>{kindIcon(todo.kind)}</span>
-                    <span className="task-copy"><strong>{todo.title}</strong><small>{todo.kind === "deadline" ? "DDL" : todo.kind === "schedule" ? "CLASS" : "PERSONAL"} · {formatDue(todo.due_at)}</small></span>
+                    <span className="task-copy"><strong>{todo.title}</strong><small>{todo.kind === "deadline" ? "DDL" : todo.kind === "schedule" ? "CLASS" : "PERSONAL"} · {formatDue(todo.due_at, hydrated)}</small></span>
                     <span className="task-check">{index === 0 ? <ArrowUpRight size={16} /> : <Check size={16} />}</span>
                   </button>
                 ))}
@@ -326,7 +343,7 @@ export function AcademicDashboard() {
                 {deadlines.length ? deadlines.map((deadline) => (
                   <div className="deadline-card" key={deadline.key}>
                     <div className="deadline-stripe" />
-                    <div className="deadline-meta"><span>{formatDue(deadline.due_at)}</span><span>UNSUBMITTED</span></div>
+                    <div className="deadline-meta"><span>{formatDue(deadline.due_at, hydrated)}</span><span>UNSUBMITTED</span></div>
                     <h3>{deadline.title.split(" · ").pop()}</h3>
                     <p>{deadline.title.split(" · ")[0]}</p>
                     <button onClick={() => setSelectedTodo(deadline)}>Focus this <ArrowUpRight size={14} /></button>
@@ -339,7 +356,7 @@ export function AcademicDashboard() {
               <div className="panel-heading"><div><span className="section-index">03</span><h2>Today&apos;s rhythm</h2></div><span className="muted-count">UTC+10</span></div>
               <div className="rhythm-list">
                 {schedule.length ? schedule.map((item) => (
-                  <div className="rhythm-row" key={item.key}><span className="rhythm-time">{item.due_at ? new Date(item.due_at).toLocaleTimeString("en-AU", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "Australia/Melbourne" }) : "—"}</span><span><strong>{item.title.split(" · ").pop()}</strong><small>{item.title.split(" · ")[0]}</small></span><span className="rhythm-dot" /></div>
+                  <div className="rhythm-row" key={item.key}><span className="rhythm-time">{formatScheduleTime(item.due_at, hydrated)}</span><span><strong>{item.title.split(" · ").pop()}</strong><small>{item.title.split(" · ")[0]}</small></span><span className="rhythm-dot" /></div>
                 )) : <div className="empty-state">No classes scheduled today.</div>}
               </div>
             </section>
