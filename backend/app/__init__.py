@@ -1,0 +1,2 @@
+"""Academic OS backend package."""
+
