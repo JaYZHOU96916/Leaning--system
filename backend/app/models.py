@@ -60,6 +60,23 @@ class Assignment(TimestampedModel, table=True):
     html_url: str | None = None
 
 
+class AssignmentSubmission(TimestampedModel, table=True):
+    __tablename__ = "assignment_submission"
+
+    id: int | None = Field(default=None, primary_key=True)
+    canvas_id: int = Field(index=True, unique=True, nullable=False)
+    assignment_id: int = Field(foreign_key="assignment.id", index=True, nullable=False)
+    attempt: int = 0
+    submitted_at: datetime | None = None
+    score: float | None = None
+    grade: str | None = None
+    workflow_state: str | None = None
+    late: bool = False
+    feedback: str | None = None
+    rubric_json: str | None = None
+    raw_json: str | None = None
+
+
 class AlertDelivery(TimestampedModel, table=True):
     __tablename__ = "alert_delivery"
 

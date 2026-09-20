@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from sqlmodel import Session, text
 
 from app.api.calendar import router as calendar_router
+from app.api.grades import router as grades_router
 from app.api.materials import router as materials_router
 from app.api.sync import router as sync_router
 from app.core.config import Settings
@@ -22,6 +23,7 @@ def create_app(settings: Settings | None = None, engine: Any | None = None) -> F
 
     app = FastAPI(title=settings.app_name, version="0.1.0", lifespan=lifespan)
     app.include_router(calendar_router)
+    app.include_router(grades_router)
     app.include_router(materials_router)
     app.include_router(sync_router)
 

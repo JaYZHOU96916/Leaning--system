@@ -29,6 +29,7 @@ def test_database_initializes_all_phase_zero_tables() -> None:
         "todo_item",
         "alert_delivery",
         "flashcard_job",
+        "assignment_submission",
     }
     assert expected <= table_names
 

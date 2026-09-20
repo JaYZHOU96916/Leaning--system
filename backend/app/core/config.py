@@ -44,6 +44,7 @@ class Settings(BaseSettings):
     llm_model: str = "gpt-4o-mini"
     llm_timeout_seconds: float = 60.0
     materials_root_dir: str = "./data/course_materials"
+    snapshots_root_dir: str = "./data/snapshots"
 
     @field_validator("canvas_base_url")
     @classmethod
