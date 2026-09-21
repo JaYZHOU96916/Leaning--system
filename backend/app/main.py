@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session, text
 
 from app.api.calendar import router as calendar_router
+from app.api.dashboard import router as dashboard_router
 from app.api.grades import router as grades_router
 from app.api.materials import router as materials_router
 from app.api.productivity import router as productivity_router
@@ -32,6 +33,7 @@ def create_app(settings: Settings | None = None, engine: Any | None = None) -> F
         allow_headers=["*"],
     )
     app.include_router(calendar_router)
+    app.include_router(dashboard_router)
     app.include_router(grades_router)
     app.include_router(materials_router)
     app.include_router(productivity_router)

@@ -1,5 +1,6 @@
-import { AcademicDashboard } from "@/components/AcademicDashboard";
+import { AppShell } from "@/components/AppShell";
+import { OverviewPage } from "@/components/WorkspacePages";
 
 export default function HomePage() {
-  return <AcademicDashboard />;
+  return <AppShell><OverviewPage /></AppShell>;
 }

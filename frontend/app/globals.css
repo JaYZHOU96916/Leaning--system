@@ -16,6 +16,7 @@ html { background: var(--ink); }
 body { margin: 0; background: var(--ink); color: var(--ink); font-family: "Avenir Next", Avenir, Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
 button, input { font: inherit; }
 button { cursor: pointer; }
+a { color: inherit; }
 button:focus-visible, input:focus-visible { outline: 3px solid rgba(255, 112, 74, .5); outline-offset: 3px; }
 
 .app-shell { min-height: 100vh; display: flex; background: var(--ink); }
@@ -23,6 +24,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid rgba(255, 112, 74
 .brand-mark { width: 42px; height: 42px; display: grid; place-items: center; color: var(--ink); background: var(--signal); border-radius: 13px 13px 13px 4px; }
 .rail-nav { display: grid; gap: 13px; margin-top: 46px; }
 .rail-button { width: 66px; min-height: 57px; padding: 8px 3px; border: 0; display: grid; gap: 6px; place-items: center; color: #738194; background: transparent; border-radius: 11px; transition: color .18s ease, background .18s ease; }
+.rail-link { text-decoration: none; }
 .rail-button span { font-size: 10px; letter-spacing: .03em; }
 .rail-button:hover, .rail-button-active { color: var(--paper); background: #1c2837; }
 .rail-button-active { box-shadow: inset 3px 0 0 var(--signal); }
@@ -133,10 +135,120 @@ button:focus-visible, input:focus-visible { outline: 3px solid rgba(255, 112, 74
 .page-footer span { display: flex; align-items: center; gap: 5px; }
 .page-footer button { display: none; }
 .mobile-nav-menu { display: none; }
+.mobile-route-nav { display: none; }
+
+/* Dedicated workspace pages */
+.page-content { max-width: 1300px; min-height: calc(100vh - 84px); padding: 46px 46px 56px; margin: 0 auto; }
+.page-heading { margin-bottom: 31px; display: flex; align-items: flex-end; justify-content: space-between; gap: 26px; }
+.page-heading .eyebrow { margin-bottom: 12px; }
+.page-heading .eyebrow span { color: var(--signal); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.page-heading h1 { max-width: 680px; margin: 0; color: var(--ink); font-size: clamp(38px, 5vw, 64px); line-height: .95; letter-spacing: -.065em; }
+.page-heading > div > p:last-child { max-width: 570px; margin: 16px 0 0; color: #687483; font-size: 14px; line-height: 1.6; }
+.data-source, .outline-action { flex: 0 0 auto; white-space: nowrap; }
+.data-source { padding: 8px 10px; border: 1px solid var(--line); color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; letter-spacing: .08em; }
+.data-source-live { border-color: #9bd2b5; color: #4e8d70; background: #eef9f2; }
+.outline-action { min-height: 36px; padding: 0 12px; display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--ink); color: var(--ink); background: transparent; text-decoration: none; font-size: 11px; font-weight: 800; }
+.outline-action:hover { color: var(--paper); background: var(--ink); }
+.semester-strip { min-height: 114px; padding: 22px 24px; display: grid; grid-template-columns: 205px minmax(150px, 1fr) auto; align-items: center; gap: 30px; color: var(--paper); background: var(--ink-soft); }
+.semester-strip > div:first-child { display: grid; gap: 7px; }
+.semester-strip > div:first-child > span, .semester-stats, .feature-kicker, .calendar-banner span, .progress-total > span { color: #98a8ba; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 800; letter-spacing: .09em; }
+.semester-strip > div:first-child strong { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 31px; letter-spacing: -.08em; }
+.semester-strip > div:first-child small { margin-left: 6px; color: #a9b4c1; font-family: inherit; font-size: 10px; letter-spacing: 0; }
+.horizon-track { height: 5px; overflow: hidden; background: #334051; }
+.horizon-track span { height: 100%; display: block; background: var(--signal); transition: width .4s ease; }
+.semester-stats { display: flex; gap: 19px; color: #a9b4c1; font-family: inherit; font-size: 10px; letter-spacing: 0; }
+.semester-stats strong { color: var(--paper); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 16px; letter-spacing: -.06em; }
+.overview-grid { margin-top: 22px; display: grid; grid-template-columns: 1.15fr .85fr; gap: 22px; align-items: start; }
+.deadline-feature { min-height: 285px; padding: 28px; display: flex; flex-direction: column; align-items: flex-start; color: var(--paper); background: var(--ink); position: relative; overflow: hidden; }
+.deadline-feature::after { width: 235px; height: 235px; content: ""; position: absolute; right: -100px; bottom: -125px; border: 36px solid rgba(188, 231, 211, .08); border-radius: 50%; }
+.feature-kicker { display: flex; align-items: center; gap: 7px; color: var(--mint); }
+.deadline-time { margin-top: auto; color: var(--signal); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 27px; font-weight: 800; letter-spacing: -.08em; }
+.deadline-time.calm { color: var(--mint); }
+.deadline-feature h2 { max-width: 480px; margin: 8px 0 5px; position: relative; z-index: 1; font-size: 27px; line-height: 1.05; letter-spacing: -.045em; }
+.deadline-feature p { margin: 0; position: relative; z-index: 1; color: #a8b4c1; font-size: 12px; }
+.inline-action { margin-top: 20px; display: inline-flex; align-items: center; gap: 5px; position: relative; z-index: 1; color: var(--paper); font-size: 11px; font-weight: 800; text-decoration: none; }
+.inline-action:hover { color: var(--signal); }
+.schedule-summary { min-height: 285px; }
+.timeline-list { display: grid; }
+.timeline-item { min-height: 62px; padding: 8px 0; display: grid; grid-template-columns: 58px 1fr; gap: 10px; align-items: center; border-bottom: 1px solid #eeeae0; }
+.timeline-item time { color: var(--signal); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; font-weight: 800; }
+.timeline-item strong, .timeline-item small { display: block; }
+.timeline-item strong { font-size: 12px; }
+.timeline-item small { margin-top: 4px; color: var(--muted); font-size: 10px; }
+.quiet-link { margin-top: 14px; display: flex; align-items: center; gap: 3px; color: var(--muted); font-size: 10px; font-weight: 800; text-decoration: none; }
+.quiet-link:hover { color: var(--ink); }
+.course-ledger { grid-column: 1 / -1; padding-bottom: 8px; }
+.course-ledger-list { display: grid; }
+.course-ledger-row { min-height: 74px; display: grid; grid-template-columns: minmax(165px, 1.1fr) minmax(170px, 1.2fr) 90px 92px; align-items: center; gap: 22px; border-top: 1px solid #eeeae0; }
+.course-identity { display: grid; gap: 5px; }
+.course-identity span { color: var(--signal); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 800; letter-spacing: .05em; }
+.course-identity strong { font-size: 13px; }
+.course-meter > div { height: 5px; overflow: hidden; background: #ece8df; }
+.course-meter > div span { height: 100%; display: block; background: #6cac8f; }
+.course-meter small { margin-top: 6px; display: block; color: var(--muted); font-size: 9px; }
+.course-assessment, .course-next { display: grid; gap: 4px; }
+.course-assessment strong, .course-next strong { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; letter-spacing: -.05em; }
+.course-assessment small, .course-next small { color: var(--muted); font-size: 9px; text-transform: uppercase; }
+.calendar-banner { padding: 22px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; color: var(--paper); background: #264053; }
+.calendar-banner h2 { max-width: 490px; margin: 7px 0 0; font-size: 18px; line-height: 1.2; letter-spacing: -.03em; }
+.calendar-banner code { max-width: 390px; overflow: auto; padding: 9px 11px; border: 1px solid rgba(255,255,255,.18); color: var(--mint); background: rgba(0,0,0,.13); font-size: 10px; white-space: nowrap; }
+.calendar-columns { margin-top: 22px; display: grid; grid-template-columns: .94fr 1.06fr; gap: 22px; }
+.agenda-list { display: grid; }
+.agenda-event { padding: 17px 0; display: grid; grid-template-columns: 76px 1fr; gap: 15px; border-top: 1px solid #eeeae0; }
+.agenda-event time { color: var(--signal); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; font-weight: 800; }
+.agenda-event time small { margin-top: 5px; display: block; color: var(--muted); font-family: inherit; font-size: 10px; }
+.agenda-event strong { font-size: 13px; }
+.agenda-event p { margin: 5px 0; color: var(--muted); font-size: 11px; }
+.agenda-event span { color: #5a776a; font-size: 10px; }
+.deadline-agenda-list { display: grid; }
+.deadline-agenda-list article { padding: 15px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; border-top: 1px solid #eeeae0; }
+.deadline-agenda-list article > div { display: grid; gap: 4px; }
+.deadline-agenda-list article span { color: var(--signal); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px; font-weight: 800; }
+.deadline-agenda-list article strong { font-size: 13px; }
+.deadline-agenda-list article small { color: var(--muted); font-size: 10px; }
+.deadline-agenda-list article em { padding-top: 4px; color: #a15340; font-size: 10px; font-style: normal; white-space: nowrap; }
+.library-stats { margin-bottom: 22px; display: grid; grid-template-columns: repeat(3, 1fr); background: var(--ink-soft); color: var(--paper); }
+.library-stats > div { min-height: 108px; padding: 20px 24px; display: grid; grid-template-columns: 26px auto; grid-template-rows: 1fr 1fr; column-gap: 10px; align-items: center; border-right: 1px solid #344151; }
+.library-stats > div:last-child { border-right: 0; }
+.library-stats svg { grid-row: 1 / -1; color: var(--mint); }
+.library-stats strong { align-self: end; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 25px; letter-spacing: -.08em; }
+.library-stats span { align-self: start; color: #9ca9b7; font-size: 10px; }
+.library-course-list { display: grid; gap: 18px; }
+.library-course-head { display: flex; justify-content: space-between; gap: 18px; }
+.library-course-head > div:first-child { display: grid; gap: 4px; }
+.library-course-head span { color: var(--signal); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9px; font-weight: 800; letter-spacing: .07em; }
+.library-course-head h2 { margin: 0; font-size: 19px; letter-spacing: -.03em; }
+.library-actions { display: flex; gap: 7px; }
+.library-actions a { height: 31px; padding: 0 9px; display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--line); color: var(--muted); font-size: 9px; font-weight: 800; text-decoration: none; }
+.library-actions a:hover { border-color: var(--ink); color: var(--ink); }
+.material-summary { margin: 17px 0 12px; display: flex; gap: 9px; color: var(--muted); font-size: 10px; }
+.material-summary span + span::before { margin-right: 9px; color: var(--line); content: "/"; }
+.material-list { display: grid; }
+.material-row { min-height: 52px; display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 9px; align-items: center; border-top: 1px solid #eeeae0; color: #748095; }
+.material-row > div { min-width: 0; display: grid; gap: 4px; }
+.material-row strong { overflow: hidden; color: var(--ink); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.material-row small, .material-row > span { color: var(--muted); font-size: 10px; }
+.progress-summary { display: grid; grid-template-columns: .72fr 1.28fr; gap: 22px; }
+.progress-total { min-height: 235px; padding: 27px; display: flex; flex-direction: column; color: var(--paper); background: var(--ink); }
+.progress-total > strong { margin-top: auto; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 54px; letter-spacing: -.11em; }
+.progress-total > strong small { margin-left: 7px; color: #b1bcc9; font-family: inherit; font-size: 11px; letter-spacing: 0; }
+.progress-total p { margin: 9px 0 0; color: #9baab8; font-size: 11px; }
+.focus-chart { min-height: 235px; }
+.progress-chart-wrap { height: 148px; margin-left: -7px; width: calc(100% + 14px); }
+.progress-courses { margin-top: 22px; }
+.progress-course-list { display: grid; gap: 18px; }
+.progress-course-list > div { display: grid; grid-template-columns: 190px 1fr; gap: 22px; align-items: center; }
+.progress-course-list > div > div:first-child { display: grid; gap: 4px; }
+.progress-course-list strong { font-size: 12px; }
+.progress-course-list span { color: var(--muted); font-size: 10px; }
+.sr-only { width: 1px; height: 1px; overflow: hidden; position: absolute; clip: rect(0,0,0,0); }
 
 @media (max-width: 1120px) {
   .content-grid { grid-template-columns: minmax(290px, 1fr) minmax(260px, .85fr); }
   .insight-column { grid-column: 1 / -1; grid-template-columns: repeat(3, 1fr); align-items: start; }
+  .page-content { padding: 37px 30px 42px; }
+  .course-ledger-row { grid-template-columns: minmax(145px, 1fr) minmax(130px, 1fr) 80px; gap: 15px; }
+  .course-next { display: none; }
 }
 
 @media (max-width: 760px) {
@@ -161,6 +273,28 @@ button:focus-visible, input:focus-visible { outline: 3px solid rgba(255, 112, 74
   .mobile-nav-menu { padding: 10px 18px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; border-bottom: 1px solid var(--line); background: var(--white); }
   .mobile-nav-menu button { min-height: 48px; padding: 6px 3px; display: grid; place-items: center; gap: 4px; border: 1px solid transparent; color: var(--muted); background: transparent; border-radius: 4px; font-size: 10px; }
   .mobile-nav-menu button.mobile-nav-active { color: var(--ink); border-color: var(--line); background: var(--paper); }
+  .mobile-route-nav { padding: 8px 12px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; border-bottom: 1px solid var(--line); background: var(--white); }
+  .mobile-route-nav a { min-height: 45px; display: grid; place-items: center; gap: 3px; color: var(--muted); font-size: 9px; text-decoration: none; }
+  .mobile-route-nav a.mobile-route-active { color: var(--ink); background: var(--paper); }
+  .page-content { min-height: auto; padding: 30px 18px 35px; }
+  .page-heading { margin-bottom: 24px; display: grid; align-items: start; gap: 15px; }
+  .page-heading h1 { font-size: 42px; }
+  .data-source, .outline-action { justify-self: start; }
+  .semester-strip { padding: 20px; grid-template-columns: 1fr; gap: 15px; }
+  .semester-stats { flex-wrap: wrap; }
+  .overview-grid, .calendar-columns, .progress-summary { grid-template-columns: 1fr; gap: 16px; }
+  .deadline-feature { min-height: 245px; }
+  .course-ledger { overflow: auto; }
+  .course-ledger-list { min-width: 610px; }
+  .course-ledger-row { grid-template-columns: 185px 190px 90px 90px; }
+  .course-next { display: grid; }
+  .calendar-banner { display: grid; gap: 16px; }
+  .calendar-banner code { max-width: calc(100vw - 72px); }
+  .library-stats { grid-template-columns: 1fr; }
+  .library-stats > div { min-height: 74px; border-right: 0; border-bottom: 1px solid #344151; }
+  .library-stats > div:last-child { border-bottom: 0; }
+  .progress-total { min-height: 190px; }
+  .progress-course-list > div { grid-template-columns: 1fr; gap: 9px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -25,6 +25,69 @@ export type Analytics = {
   daily: { date: string; seconds: number }[];
 };
 
+export type DashboardDeadline = {
+  id: number | null;
+  course_id: number;
+  course_name: string;
+  title: string;
+  due_at: string | null;
+  status: string;
+};
+
+export type DashboardScheduleEvent = {
+  id: number | null;
+  course_id: number | null;
+  course_name: string | null;
+  title: string;
+  start_at: string;
+  end_at: string | null;
+  location: string | null;
+};
+
+export type DashboardCourse = {
+  id: number | null;
+  name: string;
+  course_code: string | null;
+  term_name: string | null;
+  assignment_total: number;
+  assignment_completed: number;
+  semester_progress_percent: number | null;
+  next_due_at: string | null;
+};
+
+export type DashboardOverview = {
+  semester_label: string;
+  course_count: number;
+  semester_progress_percent: number | null;
+  courses: DashboardCourse[];
+  deadlines: DashboardDeadline[];
+  today_schedule: DashboardScheduleEvent[];
+};
+
+export type LibraryMaterial = {
+  id: number | null;
+  name: string;
+  week: string | null;
+  category: string | null;
+  size_bytes: number | null;
+  updated_at: string | null;
+};
+
+export type LibraryCourse = {
+  id: number | null;
+  name: string;
+  course_code: string | null;
+  material_count: number;
+  flashcard_count: number;
+  materials: LibraryMaterial[];
+};
+
+export type LibraryOverview = {
+  courses: LibraryCourse[];
+  total_materials: number;
+  total_flashcards: number;
+};
+
 export const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 export const API_DOCS_URL = `${API_BASE}/docs`;
 
@@ -42,6 +105,14 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 
 export async function getTodayTodos() {
   return request<{ items: TodoItem[] }>("/api/todos/today");
+}
+
+export async function getDashboardOverview() {
+  return request<DashboardOverview>("/api/dashboard/overview");
+}
+
+export async function getLibraryOverview() {
+  return request<LibraryOverview>("/api/dashboard/library");
 }
 
 export async function getFocusAnalytics() {
